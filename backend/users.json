@@ -1,0 +1,11 @@
+{
+    "users": {
+        "local": {
+            "event": 0,
+            "multiplier": 0,
+            "conversation_history": [],
+            "correct_options": "[A]",
+            "current_choice": "A"
+        }
+    }
+}

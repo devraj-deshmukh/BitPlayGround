@@ -127,6 +127,7 @@ const Game1 = ({ onGameOver }) => {
           isRefresh = false;
         }, this);
       }, this);
+      //paywall trigger
       this.events.on('gameOver', () => {
         if (onGameOver) onGameOver(); // Notify the HOC
       });
@@ -168,7 +169,7 @@ const Game1 = ({ onGameOver }) => {
       character.setVelocityX(0);
       [this.upperPillars, this.lowerPillars].forEach(group => group.children.iterate(pillar => pillar.body.velocity.x = 0));
       isGameOver = true;
-      this.events.emit('gameOver');
+     // this.events.emit('gameOver');
     }
     function hitBase(character, base) {
       let hit = this.sound.add("hit");
@@ -180,7 +181,7 @@ const Game1 = ({ onGameOver }) => {
       character.body.allowGravity = false;
       [this.upperPillars, this.lowerPillars].forEach(group => group.children.iterate(pillar => pillar.body.velocity.x = 0));
       isGameOver = true;
-      this.events.emit('gameOver');
+      
       let gameOverImage = this.add.image(game.config.width / 2, game.config.height / 4, "gameover");
       gameOverImage.setOrigin(0.5, 0.5);
       let scoreImage = this.add.image(game.config.width / 2, game.config.height, "score");
@@ -198,11 +199,13 @@ const Game1 = ({ onGameOver }) => {
         yoyo: false,
       });
       scoreText.destroy();
+      //Retry logic
       let retryImage = this.add.image(game.config.width / 2, game.config.height / 1.5, "retry");
       retryImage.setOrigin(0.5, 0.5);
       retryImage.setScale(0.25);
       retryImage.setInteractive();
       retryImage.on("pointerdown", function (pointer) {
+        this.events.emit('gameOver');
         isGameOver = false;
         score = 0;
         gameStart = false;
