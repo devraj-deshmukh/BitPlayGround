@@ -1,76 +1,111 @@
+/* Importing the Silkscreen font */
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
+
+body {
+  margin: 0;
+  font-family: "Silkscreen", sans-serif;
+  background-color: #d92d2d;
+  color: #950f0f;
+}
+
 .App {
   text-align: center;
 }
 
-/* src/App.css */
-
 .App-header {
   display: flex;
-  justify-content: space-between; /* This will space the profile and title to opposite ends */
+  justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #282c34;
-  color: white;
-  text-decoration: none;
+  padding-left: 200px;
+  padding-right: 200px;
+  background-color: #252121;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
 }
+
 .App-header h1 {
-  text-decoration: none;
+  font-size: 2.5em;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
+
 .header-content {
   display: flex;
   align-items: center;
 }
 
-
-
-
 .game-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 50px;
   justify-content: center;
 }
 
 .game-item {
-  border: 2px solid #000;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background-color: #f9f9f9;
-  padding: 10px;
+  border-radius: 15px;
+  background: linear-gradient(195deg, #ad3108, #a06c5e);
+  padding: 20px;
   text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 20px rgba(11, 11, 11, 0.6);
 }
 
 .game-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
+}
+
+.game-preview {
+  width: 100%;
+  height: auto;
+  max-height: 180px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  object-fit: contain;
 }
 
 .game-item h3 {
-  margin: 0;
-  font-size: 1.5em;
+  font-size: 1.6em;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 .play-button {
-  background-color: #61dafb;
+  background-color: #e01313;
   border: none;
-  border-radius: 5px;
-  color: white;
-  font-size: 1em;
-  padding: 10px 20px;
+  border-radius: 50px;
+  padding: 12px 25px;
+  font-size: 1.1em;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  color: #ffffff;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 5px 15px rgba(26, 188, 156, 0.6);
 }
 
 .play-button:hover {
-  background-color: #21a1f1;
+  background-color: #dbc906f1;
+  box-shadow: 0 8px 20px rgba(255, 184, 30, 0.959);
+  transform: translateY(-5px);
 }
 
-#phaser-game {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  background-color: #282c34;
+.game-selection h2 {
+  font-size: 2.7em;
+  color: #ffffff;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.game-preview {
+  width: 100%;
+  height: auto;
+
+  margin-bottom: 15px;
+  border-radius: 15px;
+  object-fit: cover;
 }
