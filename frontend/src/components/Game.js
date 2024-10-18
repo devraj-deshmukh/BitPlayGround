@@ -41,6 +41,8 @@ const Game1 = ({ onGameOver }) => {
     let spawnTime = 1500;
     let gameStart = false;
     let game = new Phaser.Game(config);
+    const walletAddress = localStorage.getItem('walletAddress');
+    console.log("Starting game with wallet:", walletAddress);
     function preload() {
       this.load.image('shaku', 'assets/catto.png');
       this.load.image("background", "assets/GameObjects/background-day.png");

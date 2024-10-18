@@ -3,7 +3,7 @@ import { Link, BrowserRouter as Router, Route, Routes, useNavigate } from 'react
 import { GameProvider } from './components/GameContext'; // Context to manage ongoing game globally
 import Profile from './components/Profile'; // Import the updated Profile component
 import Game from './components/Game';
-import Game1 from './components/zz';
+import Game1 from './components/ADVGame';
 import Login from './components/Login';
 import './App.css';
 function GameItem({ title, path }) {

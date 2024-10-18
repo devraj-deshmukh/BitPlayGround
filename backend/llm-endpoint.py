@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from groq import Groq
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel
@@ -81,7 +82,13 @@ class UserStateMiddleware(BaseHTTPMiddleware):
 
 # Add the middleware to FastAPI
 app.add_middleware(UserStateMiddleware)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to the specific origins you want to allow
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 #for testing purpose 
 # Initialize or reset user state
 def initialize_user_state():
@@ -166,8 +173,10 @@ async def start_game(request: Request):
         model="llama3-8b-8192",
     )
     first_event = chat_completion_event1.choices[0].message.content
-
-
+    event_options = first_event.split("\n")
+    print(event_options)
+    options = [text for text in event_options if text.startswith("Option")]
+    print(options)
     #generate first event correct options
     conversation_history.extend([
         {"role": "assistant", "content": first_event},
@@ -189,16 +198,19 @@ async def start_game(request: Request):
         print("No options found")"""
     player_state["conversation_history"] = conversation_history
     player_state["correct_options"]= first_event_crr_options
-
-    return {"event": 1, "story": story,"event": first_event}
+   # print("story:",story,"first evebt:",first_event)
+    return {"event_no": 1, "story": story,"event": first_event,"options":options}
 
 @app.post("/end_game/")
 async def end_game(request: Request):
     player_state = request.state.user_state
+   # print(player_state)
     if player_state["event"] != 0:
         player_state["event"] = 0  
         player_state["multiplier"] = 0  
         player_state["conversation_history"] = []  
+        player_state["correct_options"] = ""
+        player_state["current_choice"] = ""
         return {
         "details": "ended game unconditionally"
         }
@@ -219,7 +231,7 @@ async def next_event(request: Request,user_input: UserInput):
     if current_event == 1:
         return await handle_event(request,choice, 2, 0)
     elif current_event == 2:
-        return await handle_event(request,choice, 3, [0.5,0.7])
+        return await handle_event(request,choice, 3, 0.5)
     elif current_event == 3:
         return await handle_event(request,choice, "end", 2)
     elif current_event == 0:
@@ -252,6 +264,8 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
             player_state["event"] = 0  # Reset event for future games
             player_state["multiplier"] = 0  # Assign multiplier for success
             player_state["conversation_history"] = [] 
+            player_state["correct_options"] = ""
+            player_state["current_choice"] = ""
             return {"game_completed": True, "multiplier": score_multipliers*current_event, "conclusion": ending,"game_end":"pass"}
         else:
             event_end= os.environ.get(f"event{current_event}_bad_end")
@@ -267,6 +281,8 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
             player_state["event"] = 0  # Reset event for future games
             player_state["multiplier"] = 0  # Assign multiplier for success
             player_state["conversation_history"] = [] 
+            player_state["correct_options"] = ""
+            player_state["current_choice"] = ""
             return {"game_completed": True, "multiplier": score_multipliers*current_event, "conclusion": wrong_ending,"game_end":"fail"}
    
     # right choice scenario forwards to next event 
@@ -294,12 +310,16 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
         next_event = chat_completion_event.choices[0].message.content
         logging.basicConfig(filename='output.log', level=logging.INFO)
         logging.info(f'{player_state["conversation_history"]}')
-        
+        event_options = next_event.split("\n")
+        options = [text for text in event_options if text.startswith("Option")]
+        print(options)
         # also get new correct options
-        conversation_history.extend([
-        {"role": "assistant", "content":  next_event},
-        {"role": "user", "content": f"Give the correct options for event {next_event_no} in python list format eg.[A,B,C]. (do not mention anything else only give as asked)"},
-    ])
+        conversation_history.append(
+        {"role": "assistant", "content":  next_event})
+        if next_event_no ==3:
+             conversation_history.append({"role": "user", "content": f"Give the correct option for event {next_event_no} in python list format eg.[A,B,C]. (do not mention anything else only give as asked)"})
+        else:
+            conversation_history.append({"role": "user", "content": f"Give the correct options for event {next_event_no} in python list format eg.[A,B,C]. (do not mention anything else only give as asked)"})
         chat_completion_event_options = client.chat.completions.create(
                 messages=conversation_history,
                 model="llama3-8b-8192",
@@ -307,7 +327,7 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
         event_crr_options = chat_completion_event_options.choices[0].message.content
         player_state["correct_options"] = event_crr_options
         player_state["conversation_history"] = conversation_history
-        return {"game_completed": False,"event": next_event, "scenario": next_event}
+        return {"game_completed": False,"event_no":next_event_no,"event": next_event, "story": to_next,"options":options}
         #print(next_event)
     else:
         event_end= os.environ.get(f"event{current_event}_end")
@@ -320,8 +340,10 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
         logging.basicConfig(filename='output.log', level=logging.INFO)
         logging.info(f'{player_state["conversation_history"]}')
         player_state["event"] = 0  # Reset event for future games
-        player_state["multiplier"] = score_multipliers[0]  # Assign multiplier for success
+        player_state["multiplier"] = score_multipliers  # Assign multiplier for success
         player_state["conversation_history"] = [] 
+        player_state["correct_options"] = ""
+        player_state["current_choice"] = ""
         return {"game_completed": True, "multiplier": score_multipliers*current_event, "conclusion": ending,"game_end":"fail"}
 
 

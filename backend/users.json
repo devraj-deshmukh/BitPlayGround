@@ -4,8 +4,15 @@
             "event": 0,
             "multiplier": 0,
             "conversation_history": [],
-            "correct_options": "[A]",
-            "current_choice": "A"
+            "correct_options": [],
+            "current_choice": ""
+        },
+        "0xCCeB45667Cf780aBca342a148414cE59e80e1da0": {
+            "event": 0,
+            "multiplier": 0,
+            "conversation_history": [],
+            "correct_options": "",
+            "current_choice": ""
         }
     }
 }

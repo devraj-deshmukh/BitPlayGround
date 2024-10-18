@@ -1,0 +1,75 @@
+.adv-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .story-container, .event-container {
+    width: 80%;
+    text-align: center;
+  }
+  
+  .story-text, .event-story {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .click-to-continue {
+    font-size: 1.2rem;
+    color: blue;
+    cursor: pointer;
+  }
+  
+  .options-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .option-button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .option-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .end-buttons {
+    margin-top: 20px;
+  }
+  
+  .end-button, .replay-button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .replay-button {
+    background-color: #ffc107;
+  }
+  
+  .end-button:hover {
+    background-color: #218838;
+  }
+  
+  .replay-button:hover {
+    background-color: #e0a800;
+  }
+  
