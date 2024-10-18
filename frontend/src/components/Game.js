@@ -53,6 +53,7 @@ const Game1 = ({ onGameOver }) => {
       this.load.image("gameover", "assets/UI/gameover.png");
       this.load.image("score", "assets/UI/score.png");
       this.load.image("retry", "assets/UI/retry.png");
+      this.load.image("close", "assets/UI/close.png");
       this.load.image("startGame", "assets/UI/message.png");
       this.load.audio("point", "assets/SoundEffects/point.wav");
       this.load.audio("hit", "assets/SoundEffects/hit.wav");
@@ -128,8 +129,8 @@ const Game1 = ({ onGameOver }) => {
         }, this);
       }, this);
       //paywall trigger
-      this.events.on('gameOver', () => {
-        if (onGameOver) onGameOver(); // Notify the HOC
+      this.events.on('gameOver', (playerScore, multiplier,status) => {
+        if (onGameOver) onGameOver(playerScore, multiplier,status); // Notify the HOC
       });
 
 
@@ -205,7 +206,10 @@ const Game1 = ({ onGameOver }) => {
       retryImage.setScale(0.25);
       retryImage.setInteractive();
       retryImage.on("pointerdown", function (pointer) {
-        this.events.emit('gameOver');
+        let multiplier =1;
+        if (score < 20 && score>10){multiplier=0.8}
+        else if (score < 30 && score>20){multiplier=1}
+        this.events.emit('gameOver', score, multiplier,"retry");
         isGameOver = false;
         score = 0;
         gameStart = false;
@@ -213,6 +217,31 @@ const Game1 = ({ onGameOver }) => {
         hitPlayed = false;
         diePlayed = false;
         isRefresh = true;
+      }, this);
+      // Calculate the position for the close button
+      let closeButtonX = game.config.width / 2 + (retryImage.width * retryImage.scale * 0.5) + 20; // 20 pixels gap
+      let closeButtonY = game.config.height / 1.5;
+
+      // Add the close button image
+      let closeButton = this.add.image(closeButtonX, closeButtonY, "close"); // Replace "close" with your close button key
+      closeButton.setOrigin(0.4, 0.5);
+      closeButton.setScale(0.24);
+      closeButton.setInteractive();
+
+      // Optional: Add functionality to the close button
+      closeButton.on("pointerdown", function (pointer) {
+        let multiplier =1;
+        if (score < 20 && score>10){multiplier=0.8}
+        else if (score < 30 && score>20){multiplier=1}
+        this.events.emit('gameOver', score, multiplier,"close");
+        isGameOver = false;
+        score = 0;
+        gameStart = false;
+        this.scene.restart();
+        hitPlayed = false;
+        diePlayed = false;
+        isRefresh = true;
+        
       }, this);
     }
     function update() {
