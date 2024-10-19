@@ -1,1 +1,7 @@
-2024/10/18-14:01:22.703 42ec Delete type=3 #1
+2024/10/19-15:44:24.613 46ac Recovering log #6
+2024/10/19-15:44:24.621 46ac Level-0 table #8: started
+2024/10/19-15:44:24.632 46ac Level-0 table #8: 749099 bytes OK
+2024/10/19-15:44:24.635 46ac Delete type=0 #3
+2024/10/19-15:44:24.635 46ac Delete type=0 #6
+2024/10/19-15:44:24.636 46ac Delete type=3 #2
+2024/10/19-15:44:24.636 46ac Delete type=3 #4
