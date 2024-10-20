@@ -177,6 +177,11 @@ async def start_game(request: Request):
     print(event_options)
     options = [text for text in event_options if text.startswith("Option")]
     print(options)
+    event_parts = first_event.split("Option")
+
+    # The first part contains the main event description
+    event_without_options = event_parts[0].strip()
+
     #generate first event correct options
     conversation_history.extend([
         {"role": "assistant", "content": first_event},
@@ -199,7 +204,7 @@ async def start_game(request: Request):
     player_state["conversation_history"] = conversation_history
     player_state["correct_options"]= first_event_crr_options
    # print("story:",story,"first evebt:",first_event)
-    return {"event_no": 1, "story": story,"event": first_event,"options":options}
+    return {"event_no": 1, "story": story,"event": event_without_options,"options":options}
 
 @app.post("/end_game/")
 async def end_game(request: Request):
@@ -266,7 +271,7 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
             player_state["conversation_history"] = [] 
             player_state["correct_options"] = ""
             player_state["current_choice"] = ""
-            return {"game_completed": True, "multiplier": score_multipliers*current_event, "conclusion": ending,"game_end":"pass"}
+            return {"game_completed": True, "multiplier": score_multipliers, "conclusion": ending,"game_end":"pass"}
         else:
             event_end= os.environ.get(f"event{current_event}_bad_end")
             conversation_history.append({"role": "user", "content": f"User choose option {choice} {event_end}"})
@@ -283,7 +288,7 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
             player_state["conversation_history"] = [] 
             player_state["correct_options"] = ""
             player_state["current_choice"] = ""
-            return {"game_completed": True, "multiplier": score_multipliers*current_event, "conclusion": wrong_ending,"game_end":"fail"}
+            return {"game_completed": True, "multiplier": score_multipliers, "conclusion": wrong_ending,"game_end":"fail"}
    
     # right choice scenario forwards to next event 
     if check:
@@ -313,6 +318,10 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
         event_options = next_event.split("\n")
         options = [text for text in event_options if text.startswith("Option")]
         print(options)
+        event_parts = next_event.split("Option")
+        # The first part contains the main event description
+        next_event_without_options = event_parts[0].strip()
+
         # also get new correct options
         conversation_history.append(
         {"role": "assistant", "content":  next_event})
@@ -327,7 +336,7 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
         event_crr_options = chat_completion_event_options.choices[0].message.content
         player_state["correct_options"] = event_crr_options
         player_state["conversation_history"] = conversation_history
-        return {"game_completed": False,"event_no":next_event_no,"event": next_event, "story": to_next,"options":options}
+        return {"game_completed": False,"event_no":next_event_no,"event": next_event_without_options, "story": to_next,"options":options}
         #print(next_event)
     else:
         event_end= os.environ.get(f"event{current_event}_end")
@@ -344,7 +353,7 @@ async def handle_event(request: Request,choice, next_event_no, score_multipliers
         player_state["conversation_history"] = [] 
         player_state["correct_options"] = ""
         player_state["current_choice"] = ""
-        return {"game_completed": True, "multiplier": score_multipliers*current_event, "conclusion": ending,"game_end":"fail"}
+        return {"game_completed": True, "multiplier": score_multipliers, "conclusion": ending,"game_end":"fail"}
 
 
 

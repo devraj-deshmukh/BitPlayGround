@@ -68,13 +68,14 @@ function Profile() {
             setBalance(ethers.utils.formatUnits(userBalance, 18)); // Set balance
             console.log(balance);
             // Listen for Transfer events related to the user's address
-          contract.on('Transfer', (from, to, value, event) => {
+            contract.on('Transfer', (from, to, value, event) => {
             if (to === walletAddress || from === walletAddress) {
               // Fetch the updated balance when a transfer happens
               updateBalance(contract, walletAddress);
               if (to.toLowerCase() === walletAddress.toLowerCase()) {
                 setRewardAmount(ethers.utils.formatUnits(value, 18));
                 setShowNotification(true);
+                console.log("this is why notification?",event);
                 setTimeout(() => {
                   setShowNotification(false);
                 }, 3000);

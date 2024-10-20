@@ -1,10 +1,31 @@
 {
     "users": {
         "local": {
-            "event": 0,
+            "event": 1,
             "multiplier": 0,
-            "conversation_history": [],
-            "correct_options": [],
+            "conversation_history": [
+                {
+                    "role": "user",
+                    "content": "Create a fantasy story introduction featuring a thrilling adventure game where the player embarks on a quest with three events.\nThe story should set up the world and provide context for the first event.\nThe user will be the one playing this so do not include name of hero of this game\nNo events or choices should be included yet.\nNo mentioning of 3 events only story should be provided in 100 words"
+                },
+                {
+                    "role": "assistant",
+                    "content": "In the realm of Tenaria, where the sun dips into the horizon and paints the sky with hues of crimson and gold, the land is plagued by an ancient evil. The once-peaceful kingdom of Eldrid lies in ruins, its people scattered and fearful. A dark sorceress, Lyra, has risen to power, wielding a mastery of shadow and darkness. Rumors whisper of her plan to invade the sacred mountains, unleashing a terrible curse upon the land. The time of heroes has come, and the fate of Tenaria hangs in the balance. The adventure begins in the dusty streets of the last remaining stronghold, where whispers of a mysterious artifact have drawn attention to the ancient town of Ravenshire."
+                },
+                {
+                    "role": "user",
+                    "content": "Now provide the first event of the game. The event should have a scenario description and four options for the player to choose from( do not ask anything other than the below format). Three of the options should be correct, and one should lead to failure.\nFormat the response as:\n\nEvent 1:\n{scenario description}\nOption A: {description}\nOption B: {description}\nOption C: {description}\nOption D: {description}"
+                },
+                {
+                    "role": "assistant",
+                    "content": "Event 1:\nAs you arrive in Ravenshire, you notice a sense of unease in the air. The town is bustling with activity as townsfolk prepare for the upcoming Harvest Festival. However, amidst the celebrations, there is a growing concern about a recent string of missing persons. Rumors point to a mysterious figure in a black hood, said to lurk around the town's edges, kidnapping townsfolk under the cover of night.\n\nThe local authorities have called upon the bravest adventurers to investigate and put an end to the disappearances. You find yourself standing in front of the town's inn, where the mayor awaits your explanation.\n\nOption A: Head to the local tavern to gather information from the townsfolk and gather rumors about the mysterious figure.\nOption B: Visit the town's chapel to seek the wisdom of the local priestess, who is known for her insight into the workings of the mysterious forces that plague the land.\nOption C: Approach the market square to observe the townsfolk and look for any suspicious behavior that might lead you to the kidnapper.\nOption D: Ignore the mayor's plea for help and venture into the nearby forest to hunt for exotic herbs, disregarding the danger posed by the missing persons."
+                },
+                {
+                    "role": "user",
+                    "content": "Give the correct options for first event in python list format eg.[A,B,C] (do not mention anything else only give as asked)"
+                }
+            ],
+            "correct_options": "[A,B,C]",
             "current_choice": ""
         },
         "0xCCeB45667Cf780aBca342a148414cE59e80e1da0": {

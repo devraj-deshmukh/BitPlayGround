@@ -3,17 +3,11 @@ import withPayment from "./withPayment";
 import './ADVGame.css'; // Import CSS file if you want styles
 
 /*
-gotta test a bit further (game progression is functional{gamestarts,moves to next event,game over})
-update the ui (set them up in boxes also filter out event more, adjust positioning)
--event is not shown with options (story is shown before every event)
-need to give buttons at the end/ whenever game is over (for now using trigger game over button)
-gotta filter out more (the event text)
 */ 
 
 
 
 function numberToLetter(num) {
-  // ASCII value of 'A' is 65, so adding num to 65 gives the corresponding letter
   return String.fromCharCode(65 + num);
 }
 
@@ -25,7 +19,8 @@ const Game = ({ onGameOver }) => {
   const [isStoryVisible, setIsStoryVisible] = useState(true);
   const [gameCompleted, setGameCompleted] = useState(false); // To track game status
   const [gameEndStatus, setGameEndStatus] = useState("");
-  const [multiplier, setMultiplier] = useState(1);
+  const [multiplier, setMultiplier] = useState(0);
+  const [event_no, setEvent_no] = useState(0);
 
   const startGame = async (walletAddress) => {
     try {
@@ -45,6 +40,8 @@ const Game = ({ onGameOver }) => {
       setStory(data["story"]);
       setEvent(data["event"]);
       setOptions(data["options"]); // Assuming event.options contains the choices
+      setEvent_no(Number(data["event_no"]));
+      console.log("event no.",event_no);
     } catch (error) {
       console.error("Error starting the game:", error);
     }
@@ -77,9 +74,11 @@ const Game = ({ onGameOver }) => {
         if (data.game_end === "fail") {
           console.log("Game Over:", data.conclusion);
           setStory(data.conclusion); // Game over message
+          setGameCompleted(true);
         } else if (data.game_end === "pass") {
           console.log("Game Completed:", data.conclusion);
           setStory(data.conclusion); // Game success message
+          setGameCompleted(true);
         }
 
         setOptions([]); // Clear options
@@ -91,6 +90,7 @@ const Game = ({ onGameOver }) => {
       setStory(data.story);
       setEvent(data.event);
       setOptions(data.options);
+      setEvent_no(data.event_no);
       setIsStoryVisible(true); // Show new story
     } catch (error) {
       console.error("Error progressing to next event:", error);
@@ -140,27 +140,58 @@ const Game = ({ onGameOver }) => {
     const updt_option = numberToLetter(index);
     nextEvent(updt_option); // Call next_event with the selected option
   };
-
+  //this is reponsible to notify "game over" to withpayment
   const handleGameOver = (score, multiplier, status, walletAddress) => {
     if (onGameOver) {
-      onGameOver(score, multiplier, status);
+      onGameOver(score, multiplier, status); // the function in withpayment
       endGame(walletAddress);
       setGameStarted(false);
+      setGameCompleted(false);
     }
   };
 
   return (
-    <div id="phaser-game" style={{ width: "100%", height: "100%" }}>
+    <div className="adv-game">
       {isStoryVisible ? (
+        <>
         <div className="story-container">
-          <p className="story-text">{story}</p>
-          <p className="click-to-continue" onClick={() => setIsStoryVisible(false)}>
-            Click to continue
-          </p>
+          <div className="pixel-box">
+            <div className="corner top-left"></div>
+            <div className="corner top-right"></div>
+            <div className="corner bottom-left"></div>
+            <div className="corner bottom-right"></div>
+            <div className="content">
+            <p className="story-text">{story}</p>
+            </div>
+          </div>
+        
+        {gameCompleted ? (
+        <div className="end-buttons">
+          <button onClick={() => handleGameOver(event_no, multiplier, "retry", localStorage.getItem('walletAddress'))} className="replay-button">Replay</button>
+          <button onClick={() => handleGameOver(event_no, multiplier, "close", localStorage.getItem('walletAddress'))} className="close-button">Close</button>
         </div>
       ) : (
+        <div className="click-to-continue" onClick={() => setIsStoryVisible(false)}>
+          <div className='continue'>Click to Continue!</div>
+          <div className="triangle"></div>
+        </div>
+      )
+      }
+      </div>
+      </>
+      
+      ) : (
         <div className="event-container">
-          <div className="event-story">{event.story}</div>
+          <div className="pixel-box">
+            <div className="corner top-left"></div>
+            <div className="corner top-right"></div>
+            <div className="corner bottom-left"></div>
+            <div className="corner bottom-right"></div>
+            <div className="content">
+            <div className="story-text">{event}</div>
+            </div>
+          </div>
+          
           <div className="options-container">
             {options.map((option, index) => (
               <button key={index} className="option-button" onClick={() => handleOptionSelect(option,index)}>

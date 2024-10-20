@@ -5,6 +5,7 @@ import Profile from './components/Profile'; // Import the updated Profile compon
 import Game from './components/Game';
 import Game1 from './components/ADVGame';
 import Login from './components/Login';
+import Test from './components/test';
 import './App.css';
 function GameItem({ title, path }) {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ function App() {
                     <GameItem title="Adventure Game" path="/game2" />
                     <GameItem title="Wheel Mania" path="/game3" />
                     <GameItem title="ML" path="/game3" />
+                    <GameItem title="test" path="/test" />
                   </div>
                 </main>
               ) : (
@@ -53,6 +55,7 @@ function App() {
             <Route path="/game1" element={<Game />} />
             <Route path="/game2" element={<Game1 />} />
             <Route path="/game3" element={<Game1 />} />
+            <Route path="/test" element={<Test />} />
           </Routes>
         </div>
       </Router>

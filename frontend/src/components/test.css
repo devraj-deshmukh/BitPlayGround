@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
-.adv-game {
+/* test.css */
+
+.tosty {
   background-color: #202020 !important; /* Set the background */
   height:85vh;
   margin: 0 auto; /* Center the tosty horizontally */
@@ -10,13 +11,12 @@
 }
 
 
-.adv-game .pixel-box {
+
+.tosty .pixel-box {
   position: relative;
-  width: 100%; /* Makes the box take the width of the parent container (body or other) */
-  max-width: 100%; /* Ensures it doesn't overflow */
-  height: auto;
-  min-height: 200px; /* Minimum height of the box */
-  padding: 20px;
+  width: 100%;
+  height: auto; /* Allow height to adjust based on content */
+  padding: 20px; /* Padding inside the pixel box */
   background-color: white;
   border: 4px solid black;
   box-shadow: 0 0 0 4px black;
@@ -24,15 +24,14 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  box-sizing: border-box; /* Ensures padding and borders are included in the element's width/height */
-  
+  box-sizing: border-box; /* Include padding and border in width/height */
 }
 
-.adv-game .click-to-continue{
+.tosty .click-to-continue{
   cursor: pointer;
 }
 
-.adv-game .triangle {
+.tosty .triangle {
   position: absolute;
   right: 16px;
   bottom: 16px;
@@ -43,7 +42,7 @@
   border-top: 35px solid black;
 }
 
-.adv-game .continue {
+.tosty .continue {
   position: absolute;
   bottom: 16px;
   left: calc(50% + 611px);
@@ -51,29 +50,29 @@
   text-align: center;
   font-size: 30px;
 }
-.adv-game .corner {
+.tosty .corner {
     width: 16px;
     height: 16px;
     position: absolute;
     background-color: black;
   }
   
-  .adv-game .top-left {
+  .tosty .top-left {
     top: -4px;
     left: -4px;
   }
   
-  .adv-game .top-right {
+  .tosty .top-right {
     top: -4px;
     right: -4px;
   }
   
-  .adv-game .bottom-left {
+  .tosty .bottom-left {
     bottom: -4px;
     left: -4px;
   }
   
-  .adv-game .bottom-right {
+  .tosty .bottom-right {
     bottom: -4px;
     right: -4px;
   }
@@ -82,7 +81,7 @@
 
 
 
-  .adv-game .story-text {
+  .tosty .story-text {
   font-family: "Silkscreen", sans-serif;
   font-size: 1.6rem;
   margin-bottom: 20px;
@@ -98,7 +97,7 @@
 }
 */
 /* Separate options box below the story */
-.adv-game .options-container {
+.tosty .options-container {
   position: relative;
   bottom: 0;
   left: 0;
@@ -112,12 +111,12 @@
   align-items: center;
   height: auto; /* Automatically adjusts */
 }
-.adv-game .story-container{
+.tosty .story-container{
   flex-direction: column;
 }
 
 /* Flexbox for buttons */
-.adv-game .option-button {
+.tosty .option-button {
   background-color: #dcdcdc;
   border: 2px solid #0b421b;
   color: #2b3e50;
@@ -129,21 +128,21 @@
   cursor: pointer;
 }
 
-.adv-game .option-button:hover {
+.tosty .option-button:hover {
   background-color: #c4c4c4; /* Slightly darker gray */
   transform: scale(1.05);
 }
 
 
-.adv-game .end-buttons {
+.tosty .end-buttons {
   margin-top: 20px;
   display: flex; /* Use flexbox to align items */
   justify-content: center; /* Center the buttons */
   gap: 10px; /* Space between buttons */
 }
 
-.adv-game .close-button, 
-.adv-game .replay-button {
+.tosty .close-button, 
+.tosty .replay-button {
   cursor: pointer;
   padding: 10px 30px;
   font-size: 1.2rem;
@@ -154,16 +153,16 @@
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-.adv-game .replay-button {
+.tosty .replay-button {
   background-color: #ffc107; /* Default for replay button */
 }
 
-.adv-game .close-button:hover {
+.tosty .close-button:hover {
   background-color: #218838; /* Darker green on hover */
   transform: scale(1.05);
 }
 
-.adv-game .replay-button:hover {
+.tosty .replay-button:hover {
   background-color: #e0a800; /* Darker yellow on hover */
   transform: scale(1.05);
 }
